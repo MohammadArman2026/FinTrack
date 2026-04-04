@@ -17,13 +17,15 @@ import uk.ac.tees.mad.fintrack.ui.features.transactions.component.TransactionIte
 import uk.ac.tees.mad.fintrack.ui.theme.Dimens
 
 @Composable
-fun TransactionScreen(uiState: TransactionUiState, onFilterSelected: (TransactionFilter) -> Unit) {
+fun TransactionScreen(uiState: TransactionUiState,
+                      onFilterSelected: (TransactionFilter) -> Unit ,
+                      onRemoveClick:(Int)-> Unit) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = Dimens.screenPadding),
         contentPadding = PaddingValues(vertical = Dimens.spaceXS),
-        verticalArrangement = Arrangement.spacedBy(Dimens.spaceXS)
+        verticalArrangement = Arrangement.spacedBy(Dimens.spaceMD)
     ) {
         stickyHeader {
             FilterChipsRow(
@@ -35,62 +37,13 @@ fun TransactionScreen(uiState: TransactionUiState, onFilterSelected: (Transactio
                 onFilterSelected = onFilterSelected
             )
         }
-
-//        val mockTransactions = listOf(
-//            Transaction(
-//                id = 1,
-//                title = "Rent",
-//                amount = 1200.0,
-//                type = "expense",
-//                category = "Housing",
-//                date = 100000,
-//                note = "Monthly rent"
-//            ),
-//            Transaction(
-//                id = 2,
-//                title = "Amazon",
-//                amount = 45.99,
-//                type = "expense",
-//                category = "Shopping",
-//                date = 10000,
-//                note = "Bought headphones"
-//            ),
-//            Transaction(
-//                id = 3,
-//                title = "Dividend",
-//                amount = 12.50,
-//                type = "income",
-//                category = "Investment",
-//                date = 100000,
-//                note = null
-//            ),
-//            Transaction(
-//                id = 4,
-//                title = "Gas Station",
-//                amount = 60.0,
-//                type = "expense",
-//                category = "Transport",
-//                date = 10000,
-//                note = ""
-//            ),
-//            Transaction(
-//                id = 5,
-//                title = "Netflix",
-//                amount = 15.99,
-//                type = "expense",
-//                category = "Entertainment",
-//                date = 100000,
-//                note = "Monthly subscription"
-//            )
-//        )
-
         items(
             uiState.transactions,
             key = { it.id }
         ) { item ->
             TransactionItemCard(
                 transaction = item,
-                onDeleteClick = {}
+                onDeleteClick = onRemoveClick
             )
         }
     }
@@ -101,6 +54,7 @@ fun TransactionScreen(uiState: TransactionUiState, onFilterSelected: (Transactio
 fun TransactionScreenPreview() {
     TransactionScreen(
         uiState = TransactionUiState(),
-        onFilterSelected = {}
+        onFilterSelected = {} ,
+        onRemoveClick = {}
     )
 }

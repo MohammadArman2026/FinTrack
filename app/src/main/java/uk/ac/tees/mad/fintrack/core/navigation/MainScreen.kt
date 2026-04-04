@@ -22,6 +22,8 @@ import uk.ac.tees.mad.fintrack.ui.features.add_edit.AddTransactionScreen
 import uk.ac.tees.mad.fintrack.ui.features.add_edit.AddTransactionViewModel
 import uk.ac.tees.mad.fintrack.ui.features.home.HomeScreen
 import uk.ac.tees.mad.fintrack.ui.features.home.HomeViewModel
+import uk.ac.tees.mad.fintrack.ui.features.insights.InsightScreen
+import uk.ac.tees.mad.fintrack.ui.features.insights.InsightViewModel
 import uk.ac.tees.mad.fintrack.ui.features.transactions.TransactionScreen
 import uk.ac.tees.mad.fintrack.ui.features.transactions.TransactionViewModel
 
@@ -98,12 +100,23 @@ fun MainScreen(
                 val viewModel : TransactionViewModel = hiltViewModel()
                 val uiState by viewModel.uiState.collectAsStateWithLifecycle()
                 TransactionScreen(uiState = uiState ,
-                    onFilterSelected = viewModel::onFilterSelected
+                    onFilterSelected = viewModel::onFilterSelected ,
+                    onRemoveClick = viewModel::onRemoveClick
                 )
             }
 
             composable(NavigationRoutes.INSIGHTS.route){
-
+                val viewModel : InsightViewModel = hiltViewModel()
+                val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+                InsightScreen(
+                    uiState = uiState ,
+                    onFromDateClick = viewModel::onFromDateClick ,
+                    onToDateClick = viewModel::onToDateClick ,
+                    onFromDateDismiss = viewModel::onFromDateDismiss ,
+                    onToDateDismiss = viewModel::onToDateDismiss ,
+                    onFromDateConfirm = viewModel::onFromDateConfirm ,
+                    onToDateConfirm = viewModel::onToDateConfirm ,
+                )
             }
         }
     }

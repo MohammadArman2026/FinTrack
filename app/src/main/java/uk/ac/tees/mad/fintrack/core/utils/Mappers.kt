@@ -3,6 +3,9 @@ package uk.ac.tees.mad.fintrack.core.utils
 import uk.ac.tees.mad.fintrack.data.local.TransactionEntity
 import uk.ac.tees.mad.fintrack.domain.model.CategoryUI
 import uk.ac.tees.mad.fintrack.domain.model.Transaction
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 fun getCategoryUI(category: String): CategoryUI {
@@ -32,4 +35,9 @@ fun TransactionEntity.toTransaction(): Transaction{
         date = date,
         note = note
     )
+}
+
+fun formatMillisToDate(millis: Long): String {
+    val formatter = SimpleDateFormat("d MMM yyyy", Locale.getDefault())
+    return formatter.format(Date(millis))
 }

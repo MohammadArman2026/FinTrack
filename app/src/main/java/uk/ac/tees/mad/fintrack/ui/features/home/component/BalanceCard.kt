@@ -40,7 +40,7 @@ fun BalanceCard(
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                text = "$$balance",
+                text = "₹$balance",
                 color = MaterialTheme.colorScheme.onPrimary,
                 style = MaterialTheme.typography.bodyMedium
             )

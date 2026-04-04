@@ -13,11 +13,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,11 +29,14 @@ import androidx.compose.ui.unit.dp
 import uk.ac.tees.mad.fintrack.core.utils.getCategoryUI
 import uk.ac.tees.mad.fintrack.domain.model.Transaction
 import uk.ac.tees.mad.fintrack.ui.theme.Dimens
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun TransactionItemCard(
     transaction: Transaction,
-    onDeleteClick: (Transaction) -> Unit
+    onDeleteClick: (Int) -> Unit
 ) {
 
     val categoryUI = getCategoryUI(transaction.category)
@@ -93,18 +97,12 @@ fun TransactionItemCard(
                         text = transaction.title,
                         style = MaterialTheme.typography.titleMedium
                     )
-
-                    Text(
-                        text = formattedAmount,
-                        color = amountColor,
-                        style = MaterialTheme.typography.titleMedium
-                    )
                 }
 
                 Spacer(modifier = Modifier.height(4.dp))
-
+                val date = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(Date(transaction.date))
                 Text(
-                    text = "${transaction.category} • ${transaction.date}",
+                    text = "${transaction.category} • $date",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
@@ -118,12 +116,22 @@ fun TransactionItemCard(
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                     )
                 }
-
                 Spacer(modifier = Modifier.height(8.dp))
+            }
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
-                IconButton(onClick = {onDeleteClick}) {
+                Text(
+                    text = formattedAmount,
+                    color = amountColor,
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                IconButton(onClick = {onDeleteClick(transaction.id)} ,
+                    colors = IconButtonDefaults.iconButtonColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant
+                    )) {
                     Icon(
-                        Icons.Default.Delete,
+                        Icons.Default.Remove,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.error,
                         modifier = Modifier

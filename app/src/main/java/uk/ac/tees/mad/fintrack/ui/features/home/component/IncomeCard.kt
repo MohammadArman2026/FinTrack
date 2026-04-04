@@ -67,7 +67,7 @@ fun IncomeCard(
             }
 
             Text(
-                text = "$ $income",
+                text = "₹$income",
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.secondary,
             )

@@ -3,11 +3,13 @@ package uk.ac.tees.mad.fintrack.ui.features.transactions
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import uk.ac.tees.mad.fintrack.domain.repository.TransactionRepository
 import javax.inject.Inject
 
@@ -37,6 +39,12 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
 
     fun onFilterSelected(filter: TransactionFilter) {
         selectedFilter.value = filter
+    }
+
+    fun onRemoveClick(id:Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            transactionRepository.removeTransactionById(id)
+        }
     }
 
 }

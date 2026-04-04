@@ -1,11 +1,13 @@
 package uk.ac.tees.mad.fintrack.data.repository
 
+import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import uk.ac.tees.mad.fintrack.core.utils.toEntity
 import uk.ac.tees.mad.fintrack.core.utils.toTransaction
 import uk.ac.tees.mad.fintrack.data.local.TransactionDao
 import uk.ac.tees.mad.fintrack.data.local.TransactionEntity
+import uk.ac.tees.mad.fintrack.domain.model.CategoryData
 import uk.ac.tees.mad.fintrack.domain.model.Transaction
 import uk.ac.tees.mad.fintrack.domain.repository.TransactionRepository
 import javax.inject.Inject
@@ -48,8 +50,51 @@ class TransactionRepositoryImpl @Inject constructor (private val transactionDao:
             }
         }
     }
+
+    override suspend fun removeTransactionById(id: Int) {
+        transactionDao.removeTransactionById(id)
+    }
+
+    override fun getCategorySplit(
+        from: Long,
+        to: Long
+    ): Flow<List<CategoryData>> {
+        return transactionDao.getExpensesBetween(from = from , to = to)
+            .map {transactions->
+                val totalExpense = transactions.sumOf { it.amount }
+                val grouped = transactions
+                    .groupBy { it.category }
+
+                grouped.map { (categoryName, list) ->
+
+                    val categoryTotal = list.sumOf { it.amount }
+                    val percentage =
+                        if (totalExpense == 0.0) 0f
+                        else ((categoryTotal / totalExpense) * 100).toFloat()
+
+                    CategoryData(
+                        name = categoryName,
+                        percentage = percentage,
+                        amount = categoryTotal,
+                        color = getCategoryColor(categoryName)
+                    )
+                }
+            }
+    }
 }
 
+fun getCategoryColor(category: String): Color {
+    return when (category) {
+        "Food & Dining" -> Color(0xFF4CAF50)
+        "Groceries" -> Color(0xFF8BC34A)
+        "Transport" -> Color(0xFF2196F3)
+        "Shopping" -> Color(0xFF9C27B0)
+        "Entertainment" -> Color(0xFFFF9800)
+        "Bills" -> Color(0xFF795548)
+        "Health" -> Color(0xFFE91E63)
+        else -> Color.Gray
+    }
+}
 
 /**
  * TransactionRepositoryImpl implement the interface TransactionRepository.

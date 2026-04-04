@@ -39,7 +39,8 @@ fun ExpenseCard(
     ) {
         Column(modifier = Modifier.fillMaxWidth().padding(Dimens.cardPadding) ,
             verticalArrangement = Arrangement.spacedBy(Dimens.spaceMD)) {
-            Row (modifier = Modifier.fillMaxWidth()){
+            Row (modifier = Modifier.fillMaxWidth() ,
+                verticalAlignment = Alignment.CenterVertically){
                 Box(
                     modifier = Modifier.size(Dimens.iconBox)
                         .clip(RoundedCornerShape(8.dp))
@@ -63,7 +64,7 @@ fun ExpenseCard(
             }
 
             Text(
-                text = "$ $expense" ,
+                text = "₹$expense" ,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.secondary,
             )

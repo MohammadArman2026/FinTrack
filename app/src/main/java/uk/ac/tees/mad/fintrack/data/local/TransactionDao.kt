@@ -16,7 +16,6 @@ interface TransactionDao {
 
     @Query("SELECT SUM(amount) FROM transactions WHERE type = 'income'")
     fun getTotalIncome(): Flow<Double?>
-
     @Query("SELECT SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END) - SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END) FROM transactions")
     fun getTotalBalance(): Flow<Double?>
 
@@ -31,6 +30,20 @@ interface TransactionDao {
 
     @Query("SELECT * FROM transactions ORDER BY date DESC")
     fun getAllTransactions(): Flow<List<TransactionEntity>>
+
+    @Query("DELETE FROM transactions WHERE id = :id")
+    fun removeTransactionById(id : Int)
+
+    @Query("""
+    SELECT * FROM transactions 
+    WHERE type = 'expense' 
+    AND date BETWEEN :from AND :to
+""")
+    fun getExpensesBetween(
+        from: Long,
+        to: Long
+    ): Flow<List<TransactionEntity>>
+
 }
 
 /**
