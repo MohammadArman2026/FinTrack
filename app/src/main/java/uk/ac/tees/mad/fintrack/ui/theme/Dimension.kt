@@ -11,6 +11,8 @@ object Dimens {
     val spaceXXL = 32.dp
 
     val screenPadding = 16.dp
+    val cardElevation = 6.dp
+    val iconBox = 48.dp
 
     val cardPadding = 16.dp
     val cardRadius = 12.dp

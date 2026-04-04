@@ -92,4 +92,9 @@ dependencies {
      * viewmodel dependency
      */
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+
+    /**
+     * hilt navigation compose for instance viewmodel as hiltViewModel()
+     */
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 }

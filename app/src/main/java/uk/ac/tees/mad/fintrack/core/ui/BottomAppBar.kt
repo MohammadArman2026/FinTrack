@@ -2,6 +2,7 @@ package uk.ac.tees.mad.fintrack.core.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Star
@@ -15,7 +16,7 @@ import uk.ac.tees.mad.fintrack.core.navigation.NavigationRoutes
 import java.util.Locale
 
 @Composable
-fun AppBottomBar(navController: NavController , currentRoute : String) {
+fun BottomAppBar(navController: NavController , currentRoute : String) {
 
     NavigationBar {
 
@@ -36,18 +37,22 @@ fun AppBottomBar(navController: NavController , currentRoute : String) {
                 },
                 icon = {
                     Icon(
-                        imageVector = when (screen) {
-                            NavigationRoutes.HOME -> Icons.Default.Home
-                           NavigationRoutes.TRANSACTIONS -> Icons.Default.List
-                          NavigationRoutes.GOALS -> Icons.Default.Star
-                            NavigationRoutes.INSIGHTS -> Icons.Default.BarChart
-                            else -> {}
+                        imageVector = when (screen.route) {
+                            "Home" -> Icons.Default.Home
+                            "Transactions" -> Icons.Default.List
+                            "Goals" -> Icons.Default.Star
+                            "Insights" -> Icons.Default.BarChart
+                            else -> {
+                                Icons.Default.Home
+                            }
                         },
                         contentDescription = screen.route
                     )
                 },
                 label = {
-                    Text(replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() })
+                    Text(
+                        text = screen.route
+                    )
                 }
             )
         }
