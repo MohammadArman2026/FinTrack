@@ -22,4 +22,6 @@ interface TransactionRepository {
 
     fun getCategorySplit(from :Long ,to : Long) : Flow<List<CategoryData>>
 
+    suspend fun resetData():Result<Unit>
+
 }

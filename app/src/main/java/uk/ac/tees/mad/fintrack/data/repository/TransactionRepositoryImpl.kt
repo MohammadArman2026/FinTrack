@@ -81,6 +81,15 @@ class TransactionRepositoryImpl @Inject constructor (private val transactionDao:
                 }
             }
     }
+
+    override suspend fun resetData(): Result<Unit> {
+        return try {
+            transactionDao.resetData()
+            Result.success(Unit)
+        }catch (e : Exception){
+            Result.failure(e)
+        }
+    }
 }
 
 fun getCategoryColor(category: String): Color {

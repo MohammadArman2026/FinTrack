@@ -1,6 +1,7 @@
 package uk.ac.tees.mad.fintrack.data.local
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
@@ -43,6 +44,10 @@ interface TransactionDao {
         from: Long,
         to: Long
     ): Flow<List<TransactionEntity>>
+
+
+    @Query("DELETE  FROM transactions")
+    suspend fun resetData()
 
 }
 

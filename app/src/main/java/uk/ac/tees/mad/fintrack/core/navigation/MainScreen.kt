@@ -24,6 +24,8 @@ import uk.ac.tees.mad.fintrack.ui.features.home.HomeScreen
 import uk.ac.tees.mad.fintrack.ui.features.home.HomeViewModel
 import uk.ac.tees.mad.fintrack.ui.features.insights.InsightScreen
 import uk.ac.tees.mad.fintrack.ui.features.insights.InsightViewModel
+import uk.ac.tees.mad.fintrack.ui.features.setting.SettingScreen
+import uk.ac.tees.mad.fintrack.ui.features.setting.SettingViewModel
 import uk.ac.tees.mad.fintrack.ui.features.transactions.TransactionScreen
 import uk.ac.tees.mad.fintrack.ui.features.transactions.TransactionViewModel
 
@@ -34,33 +36,34 @@ fun MainScreen(
     currentRoute: String?,
     startDestination: String = ""
 ) {
-     val showBottomBar =  currentRoute in listOf(
-             NavigationRoutes.HOME.route ,
-             NavigationRoutes.TRANSACTIONS.route ,
-             NavigationRoutes.GOALS.route ,
-             NavigationRoutes.INSIGHTS.route
-     )
+    val showBottomBar = currentRoute in listOf(
+        NavigationRoutes.HOME.route,
+        NavigationRoutes.TRANSACTIONS.route,
+        NavigationRoutes.GOALS.route,
+        NavigationRoutes.INSIGHTS.route
+    )
 
-    Scaffold(modifier = modifier.fillMaxSize() ,
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 navController = navController,
-                currentRoute  = currentRoute?: NavigationRoutes.HOME.route
+                currentRoute = currentRoute ?: NavigationRoutes.HOME.route
             )
-        } ,
+        },
         floatingActionButton = {
-            if(currentRoute == NavigationRoutes.HOME.route){
-                FloatingActionButton(onClick = {navController.navigate(NavigationRoutes.ADD_EDIT.route)} ,
+            if (currentRoute == NavigationRoutes.HOME.route) {
+                FloatingActionButton(onClick = { navController.navigate(NavigationRoutes.ADD_EDIT.route) },
                     containerColor = MaterialTheme.colorScheme.primary) {
                     Icon(
-                        imageVector = Icons.Default.Add ,
+                        imageVector = Icons.Default.Add,
                         contentDescription = "add"
                     )
                 }
             }
-        } ,
+        },
         bottomBar = {
-            if(showBottomBar) {
+            if (showBottomBar) {
                 BottomAppBar(
                     navController = navController,
                     currentRoute = currentRoute ?: NavigationRoutes.HOME.route
@@ -72,50 +75,67 @@ fun MainScreen(
             navController = navController,
             startDestination = startDestination,
         ) {
-            composable(NavigationRoutes.HOME.route){
-                val viewModel : HomeViewModel = hiltViewModel()
+            composable(NavigationRoutes.HOME.route) {
+                val viewModel: HomeViewModel = hiltViewModel()
                 val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-                HomeScreen( uiState = uiState)
+                HomeScreen(uiState = uiState)
             }
 
-            composable(NavigationRoutes.GOALS.route){
+            composable(NavigationRoutes.GOALS.route) {
 
             }
 
-            composable(NavigationRoutes.ADD_EDIT.route){
-                val viewModel : AddTransactionViewModel = hiltViewModel()
+            composable(NavigationRoutes.ADD_EDIT.route) {
+                val viewModel: AddTransactionViewModel = hiltViewModel()
                 val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-                AddTransactionScreen(uiState = uiState ,
-                    onTitleChange = viewModel::titleChange ,
-                    onNoteChange = viewModel::onNoteChange ,
-                    onCategorySelected = viewModel::categoryChange ,
-                    onDateSelected = viewModel::onDateChange ,
-                    onTypeSelected = viewModel::onTypeChange ,
-                    onAmountChange = viewModel::onAmountChange ,
+                AddTransactionScreen(
+                    uiState = uiState,
+                    onTitleChange = viewModel::titleChange,
+                    onNoteChange = viewModel::onNoteChange,
+                    onCategorySelected = viewModel::categoryChange,
+                    onDateSelected = viewModel::onDateChange,
+                    onTypeSelected = viewModel::onTypeChange,
+                    onAmountChange = viewModel::onAmountChange,
                     onInsertClick = viewModel::onInsertClick
                 )
             }
 
-            composable(NavigationRoutes.TRANSACTIONS.route){
-                val viewModel : TransactionViewModel = hiltViewModel()
+            composable(NavigationRoutes.TRANSACTIONS.route) {
+                val viewModel: TransactionViewModel = hiltViewModel()
                 val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-                TransactionScreen(uiState = uiState ,
-                    onFilterSelected = viewModel::onFilterSelected ,
+                TransactionScreen(
+                    uiState = uiState,
+                    onFilterSelected = viewModel::onFilterSelected,
                     onRemoveClick = viewModel::onRemoveClick
                 )
             }
 
-            composable(NavigationRoutes.INSIGHTS.route){
-                val viewModel : InsightViewModel = hiltViewModel()
+            composable(NavigationRoutes.SETTING.route) {
+                val viewModel: SettingViewModel = hiltViewModel()
+                val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+                SettingScreen(
+                    isDarkMode = uiState.isDarkMode,
+                    onToggle = viewModel::onToggle,
+                    isLoading = uiState.isLoading,
+                    isDialogOpen = uiState.isResetDialogOpen,
+                    onResetClick = viewModel::onResetClick,
+                    onDismiss = viewModel::onDismiss,
+                    onConfirm = viewModel::onConfirmReset
+                )
+            }
+
+            composable(NavigationRoutes.INSIGHTS.route) {
+                val viewModel: InsightViewModel = hiltViewModel()
                 val uiState by viewModel.uiState.collectAsStateWithLifecycle()
                 InsightScreen(
-                    uiState = uiState ,
-                    onFromDateClick = viewModel::onFromDateClick ,
-                    onToDateClick = viewModel::onToDateClick ,
-                    onFromDateDismiss = viewModel::onFromDateDismiss ,
-                    onToDateDismiss = viewModel::onToDateDismiss ,
-                    onFromDateConfirm = viewModel::onFromDateConfirm ,
-                    onToDateConfirm = viewModel::onToDateConfirm ,
+                    uiState = uiState,
+                    onFromDateClick = viewModel::onFromDateClick,
+                    onToDateClick = viewModel::onToDateClick,
+                    onFromDateDismiss = viewModel::onFromDateDismiss,
+                    onToDateDismiss = viewModel::onToDateDismiss,
+                    onFromDateConfirm = viewModel::onFromDateConfirm,
+                    onToDateConfirm = viewModel::onToDateConfirm,
                 )
             }
         }

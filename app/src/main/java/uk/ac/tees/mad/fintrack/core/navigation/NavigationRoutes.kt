@@ -6,4 +6,6 @@ sealed class NavigationRoutes(val route: String) {
     object GOALS : NavigationRoutes("Goals")
     object INSIGHTS : NavigationRoutes("Insights")
     object ADD_EDIT : NavigationRoutes("AddEdit")
+
+    object SETTING : NavigationRoutes("Setting")
 }
