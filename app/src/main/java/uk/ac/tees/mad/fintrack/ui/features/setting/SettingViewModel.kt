@@ -2,7 +2,6 @@ package uk.ac.tees.mad.fintrack.ui.features.setting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +17,6 @@ import javax.inject.Inject
 class SettingViewModel @Inject constructor(private val preferenceManager: PreferenceManager ,
     private val transactionRepository: TransactionRepository)
     : ViewModel() {
-
         private val _uiState : MutableStateFlow<SettingUiState> = MutableStateFlow(SettingUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -26,9 +24,23 @@ class SettingViewModel @Inject constructor(private val preferenceManager: Prefer
     init {
         _uiState.update {
             it.copy(
-                isDarkMode = preferenceManager.isDarkModeEnabled()
+                isDarkMode = preferenceManager.isDarkModeEnabled() ,
+                dailyLimit = preferenceManager.getDailyLimit().toString()
             )
         }
+    }
+
+    fun onDailyLimitChange(value : String){
+        _uiState.update {
+            it.copy(
+                dailyLimit = value
+            )
+        }
+    }
+
+    fun onSaveClick(){
+        val limit = _uiState.value.dailyLimit.toFloatOrNull()
+        preferenceManager.setDailyLimit(limit?:200f)
     }
 
 

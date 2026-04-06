@@ -10,6 +10,7 @@ class PreferenceManager @Inject constructor(context : Context) {
 
     companion object{
         const val KEY_IS_DARK_MODE = "dark_mode"
+        const val KEY_DAILY_LIMIT = "daily_limit"
     }
 
     private val _isDarkMode : MutableStateFlow<Boolean> = MutableStateFlow(isDarkModeEnabled())
@@ -31,4 +32,19 @@ class PreferenceManager @Inject constructor(context : Context) {
         )
     }
 
+    fun setDailyLimit(value: Float){
+        sharedPreferences.edit {
+            putFloat(
+                KEY_DAILY_LIMIT ,
+                value
+            )
+        }
+    }
+
+    fun getDailyLimit(): Float {
+        return sharedPreferences.getFloat(
+            KEY_DAILY_LIMIT,
+            100f
+        )
+    }
 }

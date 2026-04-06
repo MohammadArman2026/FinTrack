@@ -1,5 +1,7 @@
 package uk.ac.tees.mad.fintrack.core.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -20,6 +22,8 @@ import uk.ac.tees.mad.fintrack.core.ui.BottomAppBar
 import uk.ac.tees.mad.fintrack.core.ui.TopAppBar
 import uk.ac.tees.mad.fintrack.ui.features.add_edit.AddTransactionScreen
 import uk.ac.tees.mad.fintrack.ui.features.add_edit.AddTransactionViewModel
+import uk.ac.tees.mad.fintrack.ui.features.goal.SavingStreakViewModel
+import uk.ac.tees.mad.fintrack.ui.features.goal.StreakScreen
 import uk.ac.tees.mad.fintrack.ui.features.home.HomeScreen
 import uk.ac.tees.mad.fintrack.ui.features.home.HomeViewModel
 import uk.ac.tees.mad.fintrack.ui.features.insights.InsightScreen
@@ -29,6 +33,7 @@ import uk.ac.tees.mad.fintrack.ui.features.setting.SettingViewModel
 import uk.ac.tees.mad.fintrack.ui.features.transactions.TransactionScreen
 import uk.ac.tees.mad.fintrack.ui.features.transactions.TransactionViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
@@ -82,7 +87,11 @@ fun MainScreen(
             }
 
             composable(NavigationRoutes.GOALS.route) {
-
+                val viewModel : SavingStreakViewModel = hiltViewModel()
+                val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+                StreakScreen(
+                    uiState = uiState
+                )
             }
 
             composable(NavigationRoutes.ADD_EDIT.route) {
@@ -118,6 +127,9 @@ fun MainScreen(
                     isDarkMode = uiState.isDarkMode,
                     onToggle = viewModel::onToggle,
                     isLoading = uiState.isLoading,
+                    currentLimit = uiState.dailyLimit,
+                    onLimitChange = viewModel::onDailyLimitChange,
+                    onSaveClick = viewModel::onSaveClick,
                     isDialogOpen = uiState.isResetDialogOpen,
                     onResetClick = viewModel::onResetClick,
                     onDismiss = viewModel::onDismiss,

@@ -42,8 +42,7 @@ private val DarkColorScheme = darkColorScheme(
 
 @Composable
 fun FinTrackTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
+    darkTheme: Boolean ,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
