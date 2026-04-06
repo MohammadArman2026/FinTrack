@@ -1,14 +1,17 @@
 package uk.ac.tees.mad.fintrack.ui.features.goal
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,28 +26,41 @@ fun StreakScreen(
     uiState: SavingStreakUiState,
     modifier: Modifier = Modifier
 ) {
+    Box(modifier = Modifier.fillMaxSize()){
 
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
+        when{
+            uiState.isLoading ->{
+                CircularProgressIndicator(
+                    modifier = Modifier.size(60.dp).align(Alignment.Center) ,
+                    color = MaterialTheme.colorScheme.primary ,
+                    strokeWidth = 10.dp
+                )
+            }
+            else ->{
+                LazyColumn(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
 
-        item {
-            SavingStreakHero(uiState.streakData)
-        }
+                    item {
+                        SavingStreakHero(uiState.streakData)
+                    }
 
-        item {
-            TodayStatusCard(uiState.streakData)
-        }
+                    item {
+                        TodayStatusCard(uiState.streakData)
+                    }
 
-        item {
-            MotivationCard(uiState.streakData)
-        }
+                    item {
+                        MotivationCard(uiState.streakData)
+                    }
 
-        item {
-            HistoryPlaceholder()
+                    item {
+                        HistoryPlaceholder()
+                    }
+                }
+            }
         }
     }
 }
