@@ -3,6 +3,7 @@ package uk.ac.tees.mad.fintrack.core.ui
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.CurrencyRupee
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Star
@@ -39,7 +40,7 @@ fun BottomAppBar(navController: NavController , currentRoute : String) {
                     Icon(
                         imageVector = when (screen.route) {
                             "Home" -> Icons.Default.Home
-                            "Transactions" -> Icons.Default.List
+                            "Transactions" -> Icons.Default.CurrencyRupee
                             "Goals" -> Icons.Default.Star
                             "Insights" -> Icons.Default.BarChart
                             else -> {

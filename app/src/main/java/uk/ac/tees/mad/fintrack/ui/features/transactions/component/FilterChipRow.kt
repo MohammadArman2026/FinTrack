@@ -157,7 +157,7 @@ fun TypeFilterChip(
     ExposedDropdownMenuBox(
         expanded = expanded ,
         onExpandedChange = {expanded = !expanded} ,
-        modifier = Modifier.widthIn(min = 110.dp , max = 120.dp)
+        modifier = Modifier.width(90.dp)
     ) {
 
 
